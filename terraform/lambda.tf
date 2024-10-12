@@ -17,12 +17,21 @@ module "lambda_function_gameday" {
         "s3:PutObject",
         "s3:GetObject",
         "s3:ListBucket"
-      ]
+      ],
       resources = [
         "${aws_s3_bucket.gameday_s3_bucket.arn}",           # The bucket itself
         "${aws_s3_bucket.gameday_s3_bucket.arn}/*"          # Objects within the bucket
       ]
-    }
+    },
+    {
+      effect = "Allow",
+      actions = [
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:GetItem"
+      ],
+      resources = ["${aws_dynamodb_table.log_table.arn}"]
+    }    
   ]
   create_package = true
 
