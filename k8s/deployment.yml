@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bsc-2024-gameday-tigers
+  name: bsc-2024-gameday-tigers
+  namespace: bsc-2024-gameday-tigers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bsc-2024-gameday-tigers
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: bsc-2024-gameday-tigers
+    spec:
+      serviceAccountName: kafka-consumer-sa
+      containers:
+      - image: 704855531002.dkr.ecr.us-east-1.amazonaws.com/bsc_2024_gameday_tigers:consume
+        name: bsc-2024-gameday-tigers
+        imagePullPolicy: Always
+
+
