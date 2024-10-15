@@ -37,3 +37,4 @@ terraform/builds/*
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+terraform/lambda_layers/*.zip
