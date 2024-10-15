@@ -32,3 +32,7 @@ variable "service_account_name" {
   description = "Service account name"
   type        = string
 }
+variable "sagemaker_endpoint_name" {
+  description = "Sagemaker endpoint name"
+  type        = string
+}

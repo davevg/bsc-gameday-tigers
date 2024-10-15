@@ -8,7 +8,15 @@ module "lambda_function_gameday" {
   runtime       = "python3.12"
   timeout       = 30
   attach_policy_statements = true
-
+  memory_size   = 256
+  environment_variables = {
+    SAGEMAKER_ENDPOINT = var.sagemaker_endpoint_name
+    S3_BUCKET_NAME     = aws_s3_bucket.gameday_s3_bucket.bucket
+  }
+  layers                 = [
+    
+    aws_lambda_layer_version.sklearn-layer.arn
+  ]
   # Policy to allow Lambda to interact with the S3 bucket
   policy_statements = [
     {
@@ -26,12 +34,10 @@ module "lambda_function_gameday" {
     {
       effect = "Allow",
       actions = [
-        "dynamodb:PutItem",
-        "dynamodb:UpdateItem",
-        "dynamodb:GetItem"
+        "sagemaker:InvokeEndpoint"
       ],
-      resources = ["${aws_dynamodb_table.log_table.arn}"]
-    }    
+      resources = ["*"]
+    }  
   ]
   create_package = true
 
@@ -45,7 +51,22 @@ module "lambda_function_gameday" {
   attach_policies = true
   policies        = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 
-  cloudwatch_logs_retention_in_days = 3
+  cloudwatch_logs_retention_in_days = 7
 
 
+}
+
+resource "aws_lambda_layer_version" "sklearn-layer" {
+    layer_name          = "sklearn"
+    s3_bucket = aws_s3_bucket.gameday_s3_bucket.bucket
+    s3_key = "lambda/layers/sklearn_3_12_x86_64.zip"
+    compatible_runtimes = ["python3.12"]
+    depends_on = [ aws_s3_object.sklearn-layer ]
+}
+
+resource "aws_s3_object" "sklearn-layer" {
+  bucket       = aws_s3_bucket.gameday_s3_bucket.bucket
+  key          = "lambda/layers/sklearn_3_12_x86_64.zip"
+  source       = "./lambda_layers/sklearn_3_12_x86_64.zip"
+  etag         = filemd5("./lambda_layers/sklearn_3_12_x86_64.zip")
 }
