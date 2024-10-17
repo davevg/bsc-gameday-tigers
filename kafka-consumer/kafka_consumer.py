@@ -1,6 +1,7 @@
 import os
 from confluent_kafka import Consumer, KafkaException
 import boto3
+import json
 
 # Get environment variables for AWS Lambda and Kafka configuration
 lambda_function_name = os.getenv('LAMBDA_FUNCTION_NAME', "bsc-2024-gameday-tigers")
@@ -43,12 +44,13 @@ try:
             # Invoke AWS Lambda function
             response = lambda_client.invoke(
                 FunctionName=lambda_function_name,
-                InvocationType='Event',  # Async invocation
+                InvocationType='RequestResponse',  # Async invocation
                 Payload=payload.encode('utf-8')
             )
+            response_payload = response['Payload'].read().decode('utf-8')
+            lambda_output = json.loads(response_payload)
+            print(f'{lambda_output}')
 
-            offset = msg.offset()
-            print(f'Lambda invoked: {lambda_function_name} with offset {offset}')
 
 except KeyboardInterrupt:
     pass

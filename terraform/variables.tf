@@ -36,3 +36,9 @@ variable "sagemaker_endpoint_name" {
   description = "Sagemaker endpoint name"
   type        = string
 }
+
+variable "model_metadata_file" {
+  description = "Model metadata file"
+  type        = string
+  
+}
