@@ -58,7 +58,7 @@ resource "aws_cloudwatch_dashboard" "gameday_dashboard" {
     {
         "type": "log",
         "x": 0,
-        "y": 6,
+        "y": 12,
         "width": 24,
         "height": 6,
         "properties": {
@@ -72,7 +72,7 @@ resource "aws_cloudwatch_dashboard" "gameday_dashboard" {
     {
         "type": "log",
         "x": 0,
-        "y": 12,
+        "y": 18,
         "width": 24,
         "height": 6,
         "properties": {
@@ -82,7 +82,54 @@ resource "aws_cloudwatch_dashboard" "gameday_dashboard" {
             "view": "table"
             "title": "Normal Logs"
         }
-    }     
+    },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 6,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [ "/bsc/gameday2024/${var.project}", "ResultHighOutlierCount", { "label": "Outlier Count", "id": "m1", "region": "us-east-1", "color": "#d62728" } ]
+                ],
+                "view": "gauge",
+                "stacked": true,
+                "region": "us-east-1",
+                "stat": "Sum",
+                "period": 900,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 5
+                    }
+                }
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 6,
+            "x": 12,
+            "type": "metric",
+            "properties": {
+                "metrics": [
+                    [ "/bsc/gameday2024/${var.project}", "ResultNormalCount", { "label": "Normal Count", "region": "us-east-1", "color": "#aec7e8" } ]
+                ],
+                "view": "gauge",
+                "region": "us-east-1",
+                "stat": "Sum",
+                "period": 900,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "max": 100
+                    }
+                }
+            }
+        }
+
+
     ]
   })
 }
