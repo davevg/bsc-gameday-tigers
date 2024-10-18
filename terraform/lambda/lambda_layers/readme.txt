@@ -1,4 +1,4 @@
-Not uploading the generated layer fille but the steps to generate are:
+Not uploading the generated layer file but the steps to generate are:
 
 git clone https://github.com/imperva/aws-lambda-layer.git
 cd aws-lambda-layer

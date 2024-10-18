@@ -135,6 +135,16 @@ resource "aws_cloudwatch_metric_alarm" "anomaly_alarm" {
       period      = 0 
       return_data = true 
     }
-  alarm_actions = [ ]
+    alarm_actions = [
+      aws_sns_topic.gameday_notifications.arn
+    ]
+
+    ok_actions = [
+      aws_sns_topic.gameday_notifications.arn  # Action when alarm goes back to OK
+    ]
+
+    insufficient_data_actions = [
+      aws_sns_topic.gameday_notifications.arn
+    ]
 
 }

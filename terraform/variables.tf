@@ -42,3 +42,8 @@ variable "model_metadata_file" {
   type        = string
   
 }
+variable "alert_email" {
+  description = "Email address for alerts"
+  type        = string
+  default = ""
+}
