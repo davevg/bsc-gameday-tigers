@@ -4,7 +4,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.pipeline import Pipeline, FeatureUnion
 from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler, MinMaxScaler
 
-# DataFrame Selector for selecting specific columns
+# DataFrame Selector for selecting specific columns - updated
 class DataFrameSelector(BaseEstimator, TransformerMixin):
     def __init__(self, attribute_names): 
         self.attribute_names = attribute_names
