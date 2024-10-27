@@ -7,7 +7,6 @@ import pandas as pd
 import features_eng
 import io
 
-
 # Set up logging
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -22,9 +21,6 @@ SQS_QUEUE_URL = os.getenv('SQS_QUEUE_URL', '')
 s3_client = boto3.client('s3')
 sagemaker_runtime = boto3.client('sagemaker-runtime')
 sqs_client = boto3.client('sqs')
-
-low_threshold = 0.05
-
 threshold, mean_score, std_score = features_eng.load_model_metadata_from_s3(S3_BUCKET_NAME, MODEL_METADATA_FILE, '/tmp/test.json')
 
 def publish_to_sqs(log_message):
